@@ -5,3 +5,4 @@ Hello world
 ## Team Members:
     - Mike Hume
     - Zoë Gonzales
+    - Lynn Amsbury
