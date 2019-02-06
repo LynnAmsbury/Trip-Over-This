@@ -4,3 +4,4 @@ Hello world
 
 ## Team Members:
     - Mike Hume
+    - Zoë Gonzales
