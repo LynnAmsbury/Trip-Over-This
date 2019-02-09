@@ -9,7 +9,29 @@
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+<!-- ========= Just basic HTML to display results - not for design ============= -->
+    <h2>Please enter city below.</h2>
+    <form>
+        <!-- City input is required -->
+        <label for="city-name"> City
+            <input type="text" id="city-name">
+        </label>
+        <!-- Keyword (could be topic/area of interest) is optional -->
+        <label for="keyword"> Keyword (optional)
+            <input type="text" id="keyword">
+        </label>
+        <!-- Drop down for dates - these are the only options offered by Eventful API w/ exception of past events, which I assume we don't want... -->
+        <select name="date-options" id="date">
+            <option value="Today">Today</option>
+            <option value="Future">Future</option>
+            <option value="This Week">This Week</option>
+            <option value="Next Week">Next Week</option>
+        </select>
+        <input type="submit" id="get-events">
+    </form>
 
+    <div id="events"></div>
+<!-- =============== End of test HTML ================= -->
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
