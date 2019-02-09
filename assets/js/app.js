@@ -83,13 +83,13 @@ function renderEvents(e) {
 }
 
 // AJAX call for Zomato
-let cityName = 'Denver';
-// let cityName = $('#city-name').val().trim();
-let cityCode = '';
-let queryURL = `https://developers.zomato.com/api/v2.1/locations?query=${cityName}`;
+
+
+let cityName = $('#city-name').val().trim();
+let queryURLCity = `https://developers.zomato.com/api/v2.1/locations?query=${cityName}`;
 
 $.ajax({
-    url: queryURL,
+    url: queryURLCity,
     method: 'GET',
     beforeSend: function(request) {
         request.setRequestHeader("Accept", "application/json");
@@ -100,11 +100,11 @@ $.ajax({
 });
 
 
-
-var queryURLZomato = `https://developers.zomato.com/api/v2.1/search?entity_id=305&entity_type=city&q=brewery`;
+let cityCode = '';
+var queryURLCode = `https://developers.zomato.com/api/v2.1/search?entity_id=${cityCode}&entity_type=city&q=brewery`;
 
 $.ajax({
-    url: queryURLZomato,
+    url: queryURLCode,
     method: 'GET',
     beforeSend: function(request) {
         request.setRequestHeader("Accept", "application/json");
@@ -112,6 +112,8 @@ $.ajax({
     },
 }).then(function(data){
     console.log(data);
+    let restaurantName = data.restaurants[0].restaurant.name;
+    console.log(restaurantName);
 });
 
 // Runs above function when clicked
