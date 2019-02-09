@@ -3,7 +3,7 @@
 // Code for using Eventful API
 var city = '';
 var keyword = '';
-var queryURL = '';
+var queryURLEventful = '';
 var date = '';
 
 function renderEvents(e) {
@@ -12,19 +12,19 @@ function renderEvents(e) {
     keyword = $("#keyword").val().trim();
     date = $('#date').val();
     var apiKey = 'TnjCPgZgrN3KH5Vb';
-    queryURL = `https://api.eventful.com/json/events/search?app_key=${apiKey}&location=${city}&date=Today`;
+    queryURLEventful = `https://api.eventful.com/json/events/search?app_key=${apiKey}&location=${city}&date=Today`;
 
     // Conditionals allowing for certain input to be optional
     if (keyword) {
-        queryURL = `https://api.eventful.com/json/events/search?app_key=${apiKey}&keywords=${keyword}&location=${city}&date=Future`;
+        queryURLEventful = `https://api.eventful.com/json/events/search?app_key=${apiKey}&keywords=${keyword}&location=${city}&date=Future`;
     }
 
     if (date !== "Today") {
-        queryURL = `https://api.eventful.com/json/events/search?app_key=${apiKey}&location=${city}&date=${date}`;
+        queryURLEventful = `https://api.eventful.com/json/events/search?app_key=${apiKey}&location=${city}&date=${date}`;
     }
 
     if (date !== "Today" && keyword) {
-        queryURL = `https://api.eventful.com/json/events/search?app_key=${apiKey}&location=${city}&date=${date}`;
+        queryURLEventful = `https://api.eventful.com/json/events/search?app_key=${apiKey}&location=${city}&date=${date}`;
     }
 
     // Call to Eventful API
@@ -33,7 +33,7 @@ function renderEvents(e) {
         // beforeSend: function(request) {
         // request.setRequestHeader('Access-Control-Allow-Origin', '*');
         // },
-        url: queryURL,
+        url: queryURLEventful,
         method: "GET"
     }).then(function(response){
         response = JSON.parse(response);
@@ -81,6 +81,20 @@ function renderEvents(e) {
         }
     });
 }
+
+// AJAX call for Zomato
+var queryURLZomato = `https://developers.zomato.com/api/v2.1/search?entity_id=305&entity_type=city&q=brewery`;
+
+$.ajax({
+    url: queryURLZomato,
+    method: 'GET',
+    beforeSend: function(request) {
+        request.setRequestHeader("Accept", "application/json");
+        request.setRequestHeader("user-key", "262af377ee8926dc56eff941cea5b5e1");
+    },
+}).then(function(data){
+    console.log(data);
+});
 
 // Runs above function when clicked
 $("#get-events").on("click", renderEvents);
