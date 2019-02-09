@@ -83,6 +83,24 @@ function renderEvents(e) {
 }
 
 // AJAX call for Zomato
+let cityName = 'Denver';
+// let cityName = $('#city-name').val().trim();
+let cityCode = '';
+let queryURL = `https://developers.zomato.com/api/v2.1/locations?query=${cityName}`;
+
+$.ajax({
+    url: queryURL,
+    method: 'GET',
+    beforeSend: function(request) {
+        request.setRequestHeader("Accept", "application/json");
+        request.setRequestHeader("user-key", "262af377ee8926dc56eff941cea5b5e1");
+    },
+}).then(function(data){
+    cityCode = data.location_suggestions[0].city_id;
+});
+
+
+
 var queryURLZomato = `https://developers.zomato.com/api/v2.1/search?entity_id=305&entity_type=city&q=brewery`;
 
 $.ajax({
