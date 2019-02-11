@@ -1,5 +1,3 @@
-
-
 // Code for using SeatGeek API
 var city = '';
 var eventKeyword = '';
@@ -58,38 +56,39 @@ function showEvents() {
 }
 
 // AJAX call for Zomato
+let cityCode;
+$('#brewerySubmit').on('click', cityNameAJAX);
+function cityNameAJAX(event) {
+    event.preventDefault();
 
-
-let cityName = $('#city-name').val().trim();
-let queryURLCity = `https://developers.zomato.com/api/v2.1/locations?query=${cityName}`;
-
-$.ajax({
-    url: queryURLCity,
-    method: 'GET',
-    beforeSend: function(request) {
-        request.setRequestHeader("Accept", "application/json");
-        request.setRequestHeader("user-key", "262af377ee8926dc56eff941cea5b5e1");
-    },
-}).then(function(data){
-    cityCode = data.location_suggestions[0].city_id;
-});
-
-
-let cityCode = '';
-var queryURLCode = `https://developers.zomato.com/api/v2.1/search?entity_id=${cityCode}&entity_type=city&q=brewery`;
-
-$.ajax({
-    url: queryURLCode,
-    method: 'GET',
-    beforeSend: function(request) {
-        request.setRequestHeader("Accept", "application/json");
-        request.setRequestHeader("user-key", "262af377ee8926dc56eff941cea5b5e1");
-    },
-}).then(function(data){
-    console.log(data);
-    let restaurantName = data.restaurants[0].restaurant.name;
-    console.log(restaurantName);
-});
+    let cityName = $('#city-name').val().trim();
+    let queryURLCity = `https://developers.zomato.com/api/v2.1/locations?query=${cityName}`;
+    $.ajax({
+        url: queryURLCity,
+        method: 'GET',
+        beforeSend: function(request) {
+            request.setRequestHeader("Accept", "application/json");
+            request.setRequestHeader("user-key", "262af377ee8926dc56eff941cea5b5e1");
+        },
+    }).then(function(data){
+        cityCode = data.location_suggestions[0].city_id;
+        cityCodeAJAX();
+    });
+}
+function cityCodeAJAX() {
+    let queryURLCode = `https://developers.zomato.com/api/v2.1/search?entity_id=${cityCode}&entity_type=city&q=brewery`;
+    $.ajax({
+        url: queryURLCode,
+        method: 'GET',
+        beforeSend: function(request) {
+            request.setRequestHeader("Accept", "application/json");
+            request.setRequestHeader("user-key", "262af377ee8926dc56eff941cea5b5e1");
+        },
+    }).then(function(data){
+        let restaurantName = data.restaurants[0].restaurant.name;
+        console.log(restaurantName);
+    });
+}
 
 // Runs above function when clicked
 $("#get-events").on("click", saveEvents);
