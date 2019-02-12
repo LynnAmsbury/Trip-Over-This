@@ -8,16 +8,17 @@
     <title>Trip Over This</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
         crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+        crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
-<body onload="showEvents();">
+<body onload="showEvents()">
 
     <div class="container-fluid">
 
-        <div class="jumbotron jumbotron-fluid">
+        <div class="jumbotron jumbotron-fluid p-3 mb-2 bg-primary text-white">
             <div class="container">
                 <h1 class="display-4"><i class="far fa-angry animated hinge"></i>Look! You Have Options!</h1>
                 <p class="lead">That stripper has expensive taste so your uncle couldn't afford an open bar. Here's
@@ -25,36 +26,39 @@
             </div>
         </div>
 
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">What You Could Be Doing</th>
-                    <th scope="col">Where You Could Be Doing It</th>
-                    <th scope="col">When It's Happening</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Drinking</td>
-                    <td>At the Bar</td>
-                    <td>Right Now!</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Gorging</td>
-                    <td>At the Restaurant</td>
-                    <td>Right Now!</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Monster Truck Rally</td>
-                    <td>Smash & Crash Stadium</td>
-                    <td>Tomorrow at 7:00 PM</td>
-                </tr>
-            </tbody>
-        </table>
+        <div id="background-container">
+
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">What You Could Be Doing</th>
+                        <th scope="col">Where You Could Be Doing It</th>
+                        <th scope="col">When It's Happening</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Drinking</td>
+                        <td>At the Bar</td>
+                        <td>Right Now!</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Gorging</td>
+                        <td>At the Restaurant</td>
+                        <td>Right Now!</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Monster Truck Rally</td>
+                        <td>Smash & Crash Stadium</td>
+                        <td>Tomorrow at 7:00 PM</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Moment.js -->
