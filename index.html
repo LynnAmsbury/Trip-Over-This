@@ -43,16 +43,16 @@
                         <label for="city-events"> City
                             <input type="text" id="city-events">
                         </label>
-                        <!-- Keyword (could be topic/area of interest) is optional -->
-                        <label for="events-keyword"> Keyword (optional)
-                            <input type="text" id="events-keyword">
-                        </label>
                         <br>
-                        <!-- Drop down for dates - these are the only options offered by Eventful API w/ exception of past events, which I assume we don't want... -->
-                        <label for="event-date"> Date (YYYY-MM-DD)
-                            <input type="text" id="event-date">
+                        <!-- Input for date range -->
+                        <!-- Start date -->
+                        <label for="event-start"> Date Start (YYYY-MM-DD)
+                            <input type="text" id="event-start">
                         </label>
-                        <!-- <input type="submit" id="get-events"> -->
+                        <!-- End date -->
+                        <label for="event-end"> Date End (YYYY-MM-DD)
+                            <input type="text" id="event-end">
+                        </label>
                     </form>
                     <br>
                     <p><a class="btn btn-secondary" href="#" role="button" id="get-events">Click the Fun Button! &raquo;</a></p>

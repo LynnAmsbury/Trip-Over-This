@@ -1,7 +1,8 @@
 // Code for using SeatGeek API
 var city = '';
 var eventKeyword = '';
-var eventDateTime = '';
+var eventDateStart = '';
+var eventDateEnd = '';
 var queryURLEvents = '';
 
 // This function saves user input, then makes ajax call, then saves response in localStorage
@@ -9,18 +10,10 @@ function saveEvents() {
     city = $("#city-events").val().trim();
     // keyword and date parameters are currently not returning any info from SeatGeek
     //  might have to remove or make input options either/or
-    eventKeyword = $("#events-keyword").val().trim();
-    eventDateTime = $("#event-date").val().trim();
+    eventDateStart = $("#event-start").val().trim();
+    eventDateEnd = $("#event-end").val().trim();
     var apiKey = 'MTUyMzkxNzF8MTU0OTc0OTQ1NC4wNA';
-    queryURLEvents = `https://api.seatgeek.com/2/events?client_id=${apiKey}&venue.city=${city}`;
-
-    if (eventKeyword) {
-        queryURLEvents = `https://api.seatgeek.com/2/events?client_id=${apiKey}&venue.city=${city}&datetime_local=${eventDateTime}&q=${eventKeyword}`;
-    }
-
-    if (eventDateTime) {
-        queryURLEvents = `https://api.seatgeek.com/2/events?client_id=${apiKey}&venue.city=${city}&datetime_local=${eventDateTime}&q=${eventKeyword}`;
-    }
+    queryURLEvents = `https://api.seatgeek.com/2/events?client_id=${apiKey}&venue.city=${city}&datetime_local.gte=${eventDateStart}&datetime_local.lte=${eventDateEnd}&per_page=25`;
 
     // Call to SeatGeek API
     $.ajax({
@@ -37,6 +30,7 @@ function saveEvents() {
 function showEvents() {
     var eventData = localStorage.getItem("data");
     eventData = JSON.parse(eventData);
+    console.log(eventData);
     for (var i=0; i < eventData.events.length; i++) {
         var newEvent = $("<tr>");
         var num = $("<th>");
@@ -50,7 +44,13 @@ function showEvents() {
         var dateTime = eventData.events[i].datetime_local;
         dateTime = moment(dateTime).format("MMM Do h:mm A");
         date.text(dateTime);
-        newEvent.append(num, title, location, date);
+        var linkDiv = $("<td>");
+        var link = $("<a>");
+        link.attr("href", eventData.events[i].url);
+        link.attr("target", "_blank");
+        link.text("More info");
+        linkDiv.append(link);
+        newEvent.append(num, title, location, date, linkDiv);
         $("tbody").append(newEvent);
     }
 }
