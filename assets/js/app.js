@@ -10,8 +10,8 @@ function saveEvents() {
     city = $("#city-events").val().trim();
     // keyword and date parameters are currently not returning any info from SeatGeek
     //  might have to remove or make input options either/or
-    eventDateStart = $("#event-start").val().trim();
-    eventDateEnd = $("#event-end").val().trim();
+    eventDateStart = $("#event-start").val();
+    eventDateEnd = $("#event-end").val();
     var apiKey = 'MTUyMzkxNzF8MTU0OTc0OTQ1NC4wNA';
     queryURLEvents = `https://api.seatgeek.com/2/events?client_id=${apiKey}&venue.city=${city}&datetime_local.gte=${eventDateStart}&datetime_local.lte=${eventDateEnd}&per_page=25`;
 
@@ -23,6 +23,8 @@ function saveEvents() {
             localStorage.setItem("data", JSON.stringify(response));
             window.location.replace("simpleResults.html");
         }
+    }).then(function(data) {
+        console.log(data);
     });
 }
 
