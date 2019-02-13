@@ -99,14 +99,26 @@ function cityCodeAJAX() {
         },
     }).then(function(data){
         restaurantName = data.restaurants[0].restaurant.name;
-        $('.stuff').text(restaurantName);
+        $('.restaurantData').text(restaurantName);
     });
 }
 
 function hideAndShow() {
     $('#searchForm').addClass('d-none');
 
-    let newDiv = $('<div>');
-    $(newDiv).addClass('stuff');
-    $('#background-container').append(newDiv);
+    let newContainer = $('<div>');
+    $(newContainer).addClass('container');
+    $('#background-container').append(newContainer);
+    
+    let newRow = $('<div>');
+    $(newRow).addClass('row');
+    $(newContainer).append(newRow);
+
+    let newEventCol = $('<div>');
+    $(newEventCol).addClass('col-md-6 eventData')
+    $(newRow).append(newEventCol);
+    let newRestaurantCol = $('<div>');
+    $(newRestaurantCol).addClass('col-md-6 restaurantData')
+    $(newRow).append(newRestaurantCol);
+
 };
