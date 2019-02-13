@@ -25,43 +25,45 @@ function saveEvents() {
     eventDateEnd = $("#event-end").val();
     var apiKey = 'MTUyMzkxNzF8MTU0OTc0OTQ1NC4wNA';
 
-    if (!eventDateStart && !eventDateEnd) {
-        queryURLEvents = `https://api.seatgeek.com/2/events?client_id=${apiKey}&venue.city=${city}&per_page=25`;
-    } else {
-        queryURLEvents = `https://api.seatgeek.com/2/events?client_id=${apiKey}&venue.city=${city}&datetime_local.gte=${eventDateStart}&datetime_local.lte=${eventDateEnd}&per_page=25`;
-    }
-
-    // Clearing input fields for appearance
-    $("#city-events").val('');
-    $("#event-start").val('');
-    $("#event-end").val('');
-
-    // Call to SeatGeek API
-    $.ajax({
-        url: queryURLEvents,
-        method: 'GET',
-    }).then(function(data){
-        console.log(data);
-        for (var i=0; i < data.events.length; i++) {
-            var newEvent = $("<div>");
-            var title = $("<p>");
-            title.text(data.events[i].title);
-            var location = $("<p>");
-            location.text(data.events[i].venue.name);
-            var date = $("<p>");
-            var dateTime = data.events[i].datetime_local;
-            dateTime = moment(dateTime).format("MMM Do h:mm A");
-            date.text(dateTime);
-            var linkDiv = $("<p>");
-            var link = $("<a>");
-            link.attr("href", data.events[i].url);
-            link.attr("target", "_blank");
-            link.text("More info");
-            linkDiv.append(link);
-            newEvent.append(title, location, date, linkDiv);
-            $("#event-results").append(newEvent);
+    if (city) {
+        if (!eventDateStart || !eventDateEnd) {
+            queryURLEvents = `https://api.seatgeek.com/2/events?client_id=${apiKey}&venue.city=${city}&per_page=25`;
+        } else {
+            queryURLEvents = `https://api.seatgeek.com/2/events?client_id=${apiKey}&venue.city=${city}&datetime_local.gte=${eventDateStart}&datetime_local.lte=${eventDateEnd}&per_page=25`;
         }
-    });
+    
+        // Clearing input fields for appearance
+        $("#city-events").val('');
+        $("#event-start").val('');
+        $("#event-end").val('');
+    
+        // Call to SeatGeek API
+        $.ajax({
+            url: queryURLEvents,
+            method: 'GET',
+        }).then(function(data){
+            console.log(data);
+            for (var i=0; i < data.events.length; i++) {
+                var newEvent = $("<div>");
+                var title = $("<p>");
+                title.text(data.events[i].title);
+                var location = $("<p>");
+                location.text(data.events[i].venue.name);
+                var date = $("<p>");
+                var dateTime = data.events[i].datetime_local;
+                dateTime = moment(dateTime).format("MMM Do h:mm A");
+                date.text(dateTime);
+                var linkDiv = $("<p>");
+                var link = $("<a>");
+                link.attr("href", data.events[i].url);
+                link.attr("target", "_blank");
+                link.text("More info");
+                linkDiv.append(link);
+                newEvent.append(title, location, date, linkDiv);
+                $("#event-results").append(newEvent);
+            }
+        });
+    }
 }
 
 // AJAX call for Zomato
