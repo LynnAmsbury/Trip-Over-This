@@ -74,8 +74,8 @@ function saveEvents() {
 let cityCode, restaurantName;
 function cityNameAJAX(event) {
 
-    let cityName = $('#city-events').val();
-    let queryURLCity = `https://developers.zomato.com/api/v2.1/locations?query=${cityName}`;
+    city = $('#city-events').val().trim();
+    let queryURLCity = `https://developers.zomato.com/api/v2.1/locations?query=${city}`;
     $.ajax({
         url: queryURLCity,
         method: 'GET',
@@ -85,6 +85,7 @@ function cityNameAJAX(event) {
         },
     }).then(function(data){
         cityCode = data.location_suggestions[0].city_id;
+        console.log(data);
         cityCodeAJAX();
     });
 }
