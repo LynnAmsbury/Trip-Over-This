@@ -67,11 +67,12 @@ function saveEvents() {
     cityNameAJAX();
     hideAndShow();
     }
-    
 }
 
 // AJAX call for Zomato
+
 let cityCode, restaurantName;
+
 function cityNameAJAX(event) {
 
     let cityName = $('#city-events').val();
