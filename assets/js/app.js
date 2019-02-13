@@ -54,24 +54,33 @@ function saveEvents() {
                 var dateTime = data.events[i].datetime_local;
                 dateTime = moment(dateTime).format("MMM Do h:mm A");
                 date.text(dateTime);
+                var image = $("<img>"); {
+                    if (data.events[i].performers[0].image === null) {
+                        image.attr("src", "assets/angry.png");
+                    } else {
+                        image.attr("src", data.events[i].performers[0].image);
+                    }
+                } 
                 var linkDiv = $("<p>");
                 var link = $("<a>");
                 link.attr("href", data.events[i].url);
                 link.attr("target", "_blank");
                 link.text("More info");
                 linkDiv.append(link);
-                newEvent.append(title, location, date, linkDiv);
-                $("#eventData").append(newEvent);
+
+                newEvent.append(title, location, date, linkDiv, image);
+                $("#event-results").append(newEvent);
             }
         });
     cityNameAJAX();
     hideAndShow();
     }
-    
 }
 
 // AJAX call for Zomato
+
 let cityCode, restaurantName;
+
 function cityNameAJAX(event) {
 
     city = $('#city-events').val().trim();
