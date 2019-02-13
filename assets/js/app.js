@@ -1,3 +1,16 @@
+// Initialize Firebase
+var config = {
+    apiKey: "AIzaSyCWGH8fpxEBU4lQMwhL8scicSp7kL1bGpM",
+    authDomain: "trip-over-this.firebaseapp.com",
+    databaseURL: "https://trip-over-this.firebaseio.com",
+    projectId: "trip-over-this",
+    storageBucket: "trip-over-this.appspot.com",
+    messagingSenderId: "511118842960"
+};
+
+firebase.initializeApp(config);
+
+
 // Code for using SeatGeek API
 var city = '';
 var eventKeyword = '';
@@ -8,54 +21,47 @@ var queryURLEvents = '';
 // This function saves user input, then makes ajax call, then saves response in localStorage
 function saveEvents() {    
     city = $("#city-events").val().trim();
-    // keyword and date parameters are currently not returning any info from SeatGeek
-    //  might have to remove or make input options either/or
     eventDateStart = $("#event-start").val();
     eventDateEnd = $("#event-end").val();
     var apiKey = 'MTUyMzkxNzF8MTU0OTc0OTQ1NC4wNA';
-    queryURLEvents = `https://api.seatgeek.com/2/events?client_id=${apiKey}&venue.city=${city}&datetime_local.gte=${eventDateStart}&datetime_local.lte=${eventDateEnd}&per_page=25`;
+
+    if (!eventDateStart && !eventDateEnd) {
+        queryURLEvents = `https://api.seatgeek.com/2/events?client_id=${apiKey}&venue.city=${city}&per_page=25`;
+    } else {
+        queryURLEvents = `https://api.seatgeek.com/2/events?client_id=${apiKey}&venue.city=${city}&datetime_local.gte=${eventDateStart}&datetime_local.lte=${eventDateEnd}&per_page=25`;
+    }
+
+    // Clearing input fields for appearance
+    $("#city-events").val('');
+    $("#event-start").val('');
+    $("#event-end").val('');
 
     // Call to SeatGeek API
     $.ajax({
         url: queryURLEvents,
         method: 'GET',
-        success: function(response){
-            localStorage.setItem("data", JSON.stringify(response));
-            window.location.replace("simpleResults.html");
-        }
-    }).then(function(data) {
+    }).then(function(data){
         console.log(data);
+        for (var i=0; i < data.events.length; i++) {
+            var newEvent = $("<div>");
+            var title = $("<p>");
+            title.text(data.events[i].title);
+            var location = $("<p>");
+            location.text(data.events[i].venue.name);
+            var date = $("<p>");
+            var dateTime = data.events[i].datetime_local;
+            dateTime = moment(dateTime).format("MMM Do h:mm A");
+            date.text(dateTime);
+            var linkDiv = $("<p>");
+            var link = $("<a>");
+            link.attr("href", data.events[i].url);
+            link.attr("target", "_blank");
+            link.text("More info");
+            linkDiv.append(link);
+            newEvent.append(title, location, date, linkDiv);
+            $("#event-results").append(newEvent);
+        }
     });
-}
-
-// This retrieves from localStorage / displays AJAX response in simpleResults.html
-function showEvents() {
-    console.log('showEvents');
-    var eventData = localStorage.getItem("data");
-    eventData = JSON.parse(eventData);
-    console.log(eventData);
-    for (var i=0; i < eventData.events.length; i++) {
-        var newEvent = $("<tr>");
-        var num = $("<th>");
-        num.attr("scope", "row");
-        num.text(i + 4);
-        var title = $("<td>");
-        title.text(eventData.events[i].title);
-        var location = $("<td>");
-        location.text(eventData.events[i].venue.name);
-        var date = $("<td>");
-        var dateTime = eventData.events[i].datetime_local;
-        dateTime = moment(dateTime).format("MMM Do h:mm A");
-        date.text(dateTime);
-        var linkDiv = $("<td>");
-        var link = $("<a>");
-        link.attr("href", eventData.events[i].url);
-        link.attr("target", "_blank");
-        link.text("More info");
-        linkDiv.append(link);
-        newEvent.append(num, title, location, date, linkDiv);
-        $("tbody").append(newEvent);
-    }
 }
 
 // AJAX call for Zomato
