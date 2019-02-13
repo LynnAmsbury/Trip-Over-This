@@ -61,7 +61,7 @@ function saveEvents() {
                 link.text("More info");
                 linkDiv.append(link);
                 newEvent.append(title, location, date, linkDiv);
-                $("#event-results").append(newEvent);
+                $("#eventData").append(newEvent);
             }
         });
     cityNameAJAX();
@@ -99,26 +99,12 @@ function cityCodeAJAX() {
         },
     }).then(function(data){
         restaurantName = data.restaurants[0].restaurant.name;
-        $('.restaurantData').text(restaurantName);
+        $('#restaurantData').text(restaurantName);
     });
 }
 
 function hideAndShow() {
     $('#searchForm').addClass('d-none');
 
-    let newContainer = $('<div>');
-    $(newContainer).addClass('container');
-    $('#background-container').append(newContainer);
-    
-    let newRow = $('<div>');
-    $(newRow).addClass('row');
-    $(newContainer).append(newRow);
-
-    let newEventCol = $('<div>');
-    $(newEventCol).addClass('col-md-6 eventData')
-    $(newRow).append(newEventCol);
-    let newRestaurantCol = $('<div>');
-    $(newRestaurantCol).addClass('col-md-6 restaurantData')
-    $(newRow).append(newRestaurantCol);
-
+    // Make a button to search again
 };
