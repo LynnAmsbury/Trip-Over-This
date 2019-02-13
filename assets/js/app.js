@@ -54,24 +54,32 @@ function saveEvents() {
                 var dateTime = data.events[i].datetime_local;
                 dateTime = moment(dateTime).format("MMM Do h:mm A");
                 date.text(dateTime);
+                var image = $("<img>"); {
+                    if (data.events[i].performers[0].image === null) {
+                        image.attr("src", "assets/angry.png");
+                    } else {
+                        image.attr("src", data.events[i].performers[0].image);
+                    }
+                } 
                 var linkDiv = $("<p>");
                 var link = $("<a>");
                 link.attr("href", data.events[i].url);
                 link.attr("target", "_blank");
                 link.text("More info");
                 linkDiv.append(link);
-                newEvent.append(title, location, date, linkDiv);
+                newEvent.append(title, location, date, linkDiv, image);
                 $("#event-results").append(newEvent);
             }
         });
     cityNameAJAX();
     hideAndShow();
     }
-    
 }
 
 // AJAX call for Zomato
+
 let cityCode, restaurantName;
+
 function cityNameAJAX(event) {
 
     let cityName = $('#city-events').val();
@@ -99,14 +107,26 @@ function cityCodeAJAX() {
         },
     }).then(function(data){
         restaurantName = data.restaurants[0].restaurant.name;
-        $('.stuff').text(restaurantName);
+        $('.restaurantData').text(restaurantName);
     });
 }
 
 function hideAndShow() {
     $('#searchForm').addClass('d-none');
 
-    let newDiv = $('<div>');
-    $(newDiv).addClass('stuff');
-    $('#background-container').append(newDiv);
+    let newContainer = $('<div>');
+    $(newContainer).addClass('container');
+    $('#background-container').append(newContainer);
+    
+    let newRow = $('<div>');
+    $(newRow).addClass('row');
+    $(newContainer).append(newRow);
+
+    let newEventCol = $('<div>');
+    $(newEventCol).addClass('col-md-6 eventData')
+    $(newRow).append(newEventCol);
+    let newRestaurantCol = $('<div>');
+    $(newRestaurantCol).addClass('col-md-6 restaurantData')
+    $(newRow).append(newRestaurantCol);
+
 };
