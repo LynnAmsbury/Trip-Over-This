@@ -56,7 +56,7 @@ function saveEvents() {
                 date.text(dateTime);
                 var image = $("<img>"); {
                     if (data.events[i].performers[0].image === null) {
-                        image.attr("src", "assets/angry.png");
+                        image.attr("src", "assets/images/angry.png");
                     } else {
                         image.attr("src", data.events[i].performers[0].image);
                     }
