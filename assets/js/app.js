@@ -72,19 +72,20 @@ function saveEvents() {
                 $("#eventData").append(newEvent);
             }
         });
+    }
     cityNameAJAX();
     hideAndShow();
-    }
 }
 
 // AJAX call for Zomato
-
 let cityCode, restaurantName;
 
-function cityNameAJAX(event) {
+function cityNameAJAX() {
 
-    city = $('#city-events').val().trim();
-    let queryURLCity = `https://developers.zomato.com/api/v2.1/locations?query=${city}`;
+    cityName = $('#city-events').val().trim();
+    console.log(cityName);
+    let queryURLCity = `https://developers.zomato.com/api/v2.1/locations?query=${cityName}`;
+    console.log(queryURLCity);
     $.ajax({
         url: queryURLCity,
         method: 'GET',
@@ -100,6 +101,7 @@ function cityNameAJAX(event) {
 }
 function cityCodeAJAX() {
     let queryURLCode = `https://developers.zomato.com/api/v2.1/search?entity_id=${cityCode}&entity_type=city&q=brewery`;
+    console.log(queryURLCode);
     $.ajax({
         url: queryURLCode,
         method: 'GET',
@@ -108,13 +110,20 @@ function cityCodeAJAX() {
             request.setRequestHeader("user-key", "262af377ee8926dc56eff941cea5b5e1");
         },
     }).then(function(data){
+        console.log(data);
         restaurantName = data.restaurants[0].restaurant.name;
         $('#restaurantData').text(restaurantName);
     });
 }
 
 function hideAndShow() {
+    // Hide search form
     $('#searchForm').addClass('d-none');
 
     // Make a button to search again
+    $('#newSearchBtn').removeClass('d-none');
 };
+
+$('#newSearchBtn').on('click', function() {
+    location.reload();
+})
