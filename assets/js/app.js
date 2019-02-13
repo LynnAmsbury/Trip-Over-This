@@ -7,9 +7,7 @@ var config = {
     storageBucket: "trip-over-this.appspot.com",
     messagingSenderId: "511118842960"
 };
-
 firebase.initializeApp(config);
-
 
 // Code for using SeatGeek API
 var city = '';
@@ -62,15 +60,14 @@ function saveEvents() {
             $("#event-results").append(newEvent);
         }
     });
+    cityNameAJAX();
 }
 
 // AJAX call for Zomato
 let cityCode;
-$('#brewerySubmit').on('click', cityNameAJAX);
 function cityNameAJAX(event) {
-    event.preventDefault();
 
-    let cityName = $('#city-name').val().trim();
+    let cityName = $('#city-events').val();
     let queryURLCity = `https://developers.zomato.com/api/v2.1/locations?query=${cityName}`;
     $.ajax({
         url: queryURLCity,
