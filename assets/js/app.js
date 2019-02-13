@@ -67,6 +67,7 @@ function saveEvents() {
                 link.attr("target", "_blank");
                 link.text("More info");
                 linkDiv.append(link);
+
                 newEvent.append(title, location, date, linkDiv, image);
                 $("#event-results").append(newEvent);
             }
@@ -82,8 +83,8 @@ let cityCode, restaurantName;
 
 function cityNameAJAX(event) {
 
-    let cityName = $('#city-events').val();
-    let queryURLCity = `https://developers.zomato.com/api/v2.1/locations?query=${cityName}`;
+    city = $('#city-events').val().trim();
+    let queryURLCity = `https://developers.zomato.com/api/v2.1/locations?query=${city}`;
     $.ajax({
         url: queryURLCity,
         method: 'GET',
@@ -93,6 +94,7 @@ function cityNameAJAX(event) {
         },
     }).then(function(data){
         cityCode = data.location_suggestions[0].city_id;
+        console.log(data);
         cityCodeAJAX();
     });
 }
@@ -107,26 +109,12 @@ function cityCodeAJAX() {
         },
     }).then(function(data){
         restaurantName = data.restaurants[0].restaurant.name;
-        $('.restaurantData').text(restaurantName);
+        $('#restaurantData').text(restaurantName);
     });
 }
 
 function hideAndShow() {
     $('#searchForm').addClass('d-none');
 
-    let newContainer = $('<div>');
-    $(newContainer).addClass('container');
-    $('#background-container').append(newContainer);
-    
-    let newRow = $('<div>');
-    $(newRow).addClass('row');
-    $(newContainer).append(newRow);
-
-    let newEventCol = $('<div>');
-    $(newEventCol).addClass('col-md-6 eventData')
-    $(newRow).append(newEventCol);
-    let newRestaurantCol = $('<div>');
-    $(newRestaurantCol).addClass('col-md-6 restaurantData')
-    $(newRow).append(newRestaurantCol);
-
+    // Make a button to search again
 };
