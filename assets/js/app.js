@@ -24,7 +24,7 @@ function saveEvents() {
     eventDateStart = $("#event-start").val();
     eventDateEnd = $("#event-end").val();
     var apiKey = 'MTUyMzkxNzF8MTU0OTc0OTQ1NC4wNA';
-    
+
     if (!eventDateStart && !eventDateEnd) {
         queryURLEvents = `https://api.seatgeek.com/2/events?client_id=${apiKey}&venue.city=${city}&per_page=25`;
     } else {
@@ -61,8 +61,6 @@ function saveEvents() {
             newEvent.append(title, location, date, linkDiv);
             $("#event-results").append(newEvent);
         }
-    }).then(function(data) {
-        console.log(data);
     });
 }
 
