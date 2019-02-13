@@ -9,6 +9,9 @@ var config = {
 };
 firebase.initializeApp(config);
 
+// Runs above function when clicked
+$("#get-events").on("click", saveEvents);
+
 // Code for using SeatGeek API
 var city = '';
 var eventKeyword = '';
@@ -61,10 +64,11 @@ function saveEvents() {
         }
     });
     cityNameAJAX();
+    hideAndShow();
 }
 
 // AJAX call for Zomato
-let cityCode;
+let cityCode, restaurantName;
 function cityNameAJAX(event) {
 
     let cityName = $('#city-events').val();
@@ -91,10 +95,15 @@ function cityCodeAJAX() {
             request.setRequestHeader("user-key", "262af377ee8926dc56eff941cea5b5e1");
         },
     }).then(function(data){
-        let restaurantName = data.restaurants[0].restaurant.name;
-        console.log(restaurantName);
+        restaurantName = data.restaurants[0].restaurant.name;
+        $('.stuff').text(restaurantName);
     });
 }
 
-// Runs above function when clicked
-$("#get-events").on("click", saveEvents);
+function hideAndShow() {
+    $('#searchForm').addClass('d-none');
+
+    let newDiv = $('<div>');
+    $(newDiv).addClass('stuff');
+    $('#background-container').append(newDiv);
+};
