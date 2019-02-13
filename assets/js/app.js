@@ -28,6 +28,7 @@ function saveEvents() {
 
 // This retrieves from localStorage / displays AJAX response in simpleResults.html
 function showEvents() {
+    console.log('showEvents');
     var eventData = localStorage.getItem("data");
     eventData = JSON.parse(eventData);
     console.log(eventData);
