@@ -69,7 +69,7 @@ function saveEvents() {
                 linkDiv.append(link);
 
                 newEvent.append(title, location, date, linkDiv, image);
-                $("#event-results").append(newEvent);
+                $("#eventData").append(newEvent);
             }
         });
     cityNameAJAX();
