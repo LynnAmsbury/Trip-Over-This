@@ -9,30 +9,28 @@ var config = {
 };
 firebase.initializeApp(config);
 
-// Runs above function when clicked
-// $("#get-events").on("click", saveEvents);
-
-// Code for using SeatGeek API
+// Variables for SeatGeek API
 var city = '';
 var eventKeyword = '';
 var eventDateStart = '';
 var eventDateEnd = '';
 var queryURLEvents = '';
 
-// This function saves user input, then makes ajax call, then saves response in localStorage
-function saveEvents() {    
+// Function runs 3 API calls, appends info to page ~ Runs when div with #get-info is clicked
+function getInfo() {    
+    // getting info from user input and saving to variables
     city = $("#city-events").val().trim();
     eventDateStart = $("#event-start").val();
     eventDateEnd = $("#event-end").val();
+
     var apiKey = 'MTUyMzkxNzF8MTU0OTc0OTQ1NC4wNA';
 
-    if (city) {
-        if (!eventDateStart || !eventDateEnd) {
-            queryURLEvents = `https://api.seatgeek.com/2/events?client_id=${apiKey}&venue.city=${city}&per_page=25`;
-        } else {
-            queryURLEvents = `https://api.seatgeek.com/2/events?client_id=${apiKey}&venue.city=${city}&datetime_local.gte=${eventDateStart}&datetime_local.lte=${eventDateEnd}&per_page=25`;
-        }
-      
+    // Conditionals handle if user does not enter a city or date range
+    if (city && eventDateStart && eventDateEnd) {
+
+        // Update queryURL
+        queryURLEvents = `https://api.seatgeek.com/2/events?client_id=${apiKey}&venue.city=${city}&datetime_local.gte=${eventDateStart}&datetime_local.lte=${eventDateEnd}&per_page=25`;
+        
         // Clearing input fields for appearance
         $("#city-events").val('');
         $("#event-start").val('');
@@ -43,102 +41,123 @@ function saveEvents() {
             url: queryURLEvents,
             method: 'GET',
         }).then(function(data){
-            console.log(data);
+            // Looping through data.events array
             for (var i=0; i < data.events.length; i++) {
+                // Creating new DOM elements to hold API info
                 var newEvent = $("<div>");
+                // Event title
                 var title = $("<p>");
                 title.text(data.events[i].title);
+                // Event location (venue)
                 var location = $("<p>");
                 location.text(data.events[i].venue.name);
+                // Event Date & Time
                 var date = $("<p>");
                 var dateTime = data.events[i].datetime_local;
                 dateTime = moment(dateTime).format("MMM Do h:mm A");
                 date.text(dateTime);
+                // Event image from seatgeek
                 var image = $("<img>"); {
+                    // if seatgeek image does not exist, replace image source with angry face placeholder
                     if (data.events[i].performers[0].image === null) {
                         image.attr("src", "assets/images/angry.png");
                     } else {
                         image.attr("src", data.events[i].performers[0].image);
                     }
                 } 
+                // Event link on seatgeek site ~ p tag added for div positioning
                 var linkDiv = $("<p>");
                 var link = $("<a>");
                 link.attr("href", data.events[i].url);
                 link.attr("target", "_blank");
                 link.text("More info");
                 linkDiv.append(link);
-
+                // Append it all to empty div
                 newEvent.append(title, location, date, linkDiv, image);
+                // Append that to event column
                 $("#eventData").append(newEvent);
             }
         });
+
+        // cityNameAJAX(); // commenting out since moving other ajax calls into getInfo function
+        // ==================================================================
+
+        // Zomato API call #1 - for city code
+        let cityCode;
+        let cityName = city;
+        let queryURLCity = `https://developers.zomato.com/api/v2.1/locations?query=${cityName}`;
+        $.ajax({
+            url: queryURLCity,
+            method: 'GET',
+            beforeSend: function(request) {
+                request.setRequestHeader("Accept", "application/json");
+                request.setRequestHeader("user-key", "262af377ee8926dc56eff941cea5b5e1");
+            },
+        }).then(function(data){
+            cityCode = data.location_suggestions[0].city_id;
+            // cityCodeAJAX(); // Commenting out since this ajax call has been added within the same function
+        });
+        //  ==================================================================
+
+        // Zomato API call #2 - for restaurant details
+        let queryURLCode = `https://developers.zomato.com/api/v2.1/search?entity_id=${cityCode}&entity_type=city&q=brewery&count=5`;
+        $.ajax({
+            url: queryURLCode,
+            method: 'GET',
+            beforeSend: function(request) {
+                request.setRequestHeader("Accept", "application/json");
+                request.setRequestHeader("user-key", "262af377ee8926dc56eff941cea5b5e1");
+            },
+        }).then(function(data){
+            let resultsArr = data.restaurants;
+            for (let i = 0; i < resultsArr.length; i++) {
+                let restaurantName = resultsArr[i].restaurant.name;
+                // Create elements
+                let newCard = $('<div>');
+                let newImg = $('<img>');
+                let newBody = $('<div>');
+                let newTitle = $('<h5>');
+                let newText = $('<p>');
+                let newLike = $('<a>');
+                // Add classes
+                $(newCard).addClass('card');
+                $(newImg).addClass('card-img-top');
+                $(newBody).addClass('card-body');
+                $(newTitle).addClass('card-title');
+                $(newText).addClass('card-text');
+                $(newLike).addClass('btn btn-primary');
+                // Add text
+                $(newImg).attr('src', 'http://placehold.it/350x150');
+                $(newTitle).text(restaurantName);
+                $(newText).text('Insert text here');
+                $(newLike).attr('href', '#');
+                $(newLike).text('Like');
+                // Add to DOM
+                $('#restaurantData').append(newCard);
+                $(newCard).append(newImg);
+                $(newCard).append(newBody);
+                $(newBody).append(newTitle);
+                $(newBody).append(newText);
+                $(newBody).append(newLike);
+            }
+        });
+
+        hideAndShow(); // Keeping separate so that this function can just handle ajax calls
+    } else { // runs if user doesn't enter a city or date range
+        $("#error-message").text("Please enter a city and date range.");
     }
-    cityNameAJAX();
-    hideAndShow();
 }
 
 // AJAX call for Zomato
-let cityCode;
+// let cityCode;
 
-function cityNameAJAX() {
+// function cityNameAJAX() {
 
-    let cityName = city;
-    let queryURLCity = `https://developers.zomato.com/api/v2.1/locations?query=${cityName}`;
-    $.ajax({
-        url: queryURLCity,
-        method: 'GET',
-        beforeSend: function(request) {
-            request.setRequestHeader("Accept", "application/json");
-            request.setRequestHeader("user-key", "262af377ee8926dc56eff941cea5b5e1");
-        },
-    }).then(function(data){
-        cityCode = data.location_suggestions[0].city_id;
-        cityCodeAJAX();
-    });
-}
-function cityCodeAJAX() {
-    let queryURLCode = `https://developers.zomato.com/api/v2.1/search?entity_id=${cityCode}&entity_type=city&q=brewery&count=5`;
-    $.ajax({
-        url: queryURLCode,
-        method: 'GET',
-        beforeSend: function(request) {
-            request.setRequestHeader("Accept", "application/json");
-            request.setRequestHeader("user-key", "262af377ee8926dc56eff941cea5b5e1");
-        },
-    }).then(function(data){
-        let resultsArr = data.restaurants;
-        for (let i = 0; i < resultsArr.length; i++) {
-            let restaurantName = resultsArr[i].restaurant.name;
-            // Create elements
-            let newCard = $('<div>');
-            let newImg = $('<img>');
-            let newBody = $('<div>');
-            let newTitle = $('<h5>');
-            let newText = $('<p>');
-            let newLike = $('<a>');
-            // Add classes
-            $(newCard).addClass('card');
-            $(newImg).addClass('card-img-top');
-            $(newBody).addClass('card-body');
-            $(newTitle).addClass('card-title');
-            $(newText).addClass('card-text');
-            $(newLike).addClass('btn btn-primary');
-            // Add text
-            $(newImg).attr('src', 'http://placehold.it/350x150');
-            $(newTitle).text(restaurantName);
-            $(newText).text('Insert text here');
-            $(newLike).attr('href', '#');
-            $(newLike).text('Like');
-            // Add to DOM
-            $('#restaurantData').append(newCard);
-            $(newCard).append(newImg);
-            $(newCard).append(newBody);
-            $(newBody).append(newTitle);
-            $(newBody).append(newText);
-            $(newBody).append(newLike);
-        }
-    });
-}
+
+// }
+// function cityCodeAJAX() {
+
+// }
 
 function hideAndShow() {
     // Hide search form
@@ -151,3 +170,6 @@ function hideAndShow() {
 $('#newSearchBtn').on('click', function() {
     location.reload();
 })
+
+// Event listener on input form ~ Runs get info 
+$("#get-info").on("click", getInfo);
