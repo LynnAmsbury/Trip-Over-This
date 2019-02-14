@@ -10,7 +10,7 @@ var config = {
 firebase.initializeApp(config);
 
 // Runs above function when clicked
-$("#get-events").on("click", saveEvents);
+// $("#get-events").on("click", saveEvents);
 
 // Code for using SeatGeek API
 var city = '';
@@ -78,14 +78,12 @@ function saveEvents() {
 }
 
 // AJAX call for Zomato
-let cityCode, restaurantName;
+let cityCode;
 
 function cityNameAJAX() {
 
-    cityName = $('#city-events').val().trim();
-    console.log(cityName);
+    let cityName = city;
     let queryURLCity = `https://developers.zomato.com/api/v2.1/locations?query=${cityName}`;
-    console.log(queryURLCity);
     $.ajax({
         url: queryURLCity,
         method: 'GET',
@@ -95,13 +93,11 @@ function cityNameAJAX() {
         },
     }).then(function(data){
         cityCode = data.location_suggestions[0].city_id;
-        console.log(data);
         cityCodeAJAX();
     });
 }
 function cityCodeAJAX() {
-    let queryURLCode = `https://developers.zomato.com/api/v2.1/search?entity_id=${cityCode}&entity_type=city&q=brewery`;
-    console.log(queryURLCode);
+    let queryURLCode = `https://developers.zomato.com/api/v2.1/search?entity_id=${cityCode}&entity_type=city&q=brewery&count=5`;
     $.ajax({
         url: queryURLCode,
         method: 'GET',
@@ -110,9 +106,37 @@ function cityCodeAJAX() {
             request.setRequestHeader("user-key", "262af377ee8926dc56eff941cea5b5e1");
         },
     }).then(function(data){
-        console.log(data);
-        restaurantName = data.restaurants[0].restaurant.name;
-        $('#restaurantData').text(restaurantName);
+        let resultsArr = data.restaurants;
+        for (let i = 0; i < resultsArr.length; i++) {
+            let restaurantName = resultsArr[i].restaurant.name;
+            // Create elements
+            let newCard = $('<div>');
+            let newImg = $('<img>');
+            let newBody = $('<div>');
+            let newTitle = $('<h5>');
+            let newText = $('<p>');
+            let newLike = $('<a>');
+            // Add classes
+            $(newCard).addClass('card');
+            $(newImg).addClass('card-img-top');
+            $(newBody).addClass('card-body');
+            $(newTitle).addClass('card-title');
+            $(newText).addClass('card-text');
+            $(newLike).addClass('btn btn-primary');
+            // Add text
+            $(newImg).attr('src', 'http://placehold.it/350x150');
+            $(newTitle).text(restaurantName);
+            $(newText).text('Insert text here');
+            $(newLike).attr('href', '#');
+            $(newLike).text('Like');
+            // Add to DOM
+            $('#restaurantData').append(newCard);
+            $(newCard).append(newImg);
+            $(newCard).append(newBody);
+            $(newBody).append(newTitle);
+            $(newBody).append(newText);
+            $(newBody).append(newLike);
+        }
     });
 }
 
