@@ -109,9 +109,33 @@ function cityCodeAJAX() {
         let resultsArr = data.restaurants;
         for (let i = 0; i < resultsArr.length; i++) {
             let restaurantName = resultsArr[i].restaurant.name;
-            let newP = $('<p>');
-            $(newP).text(restaurantName);
-            $('#restaurantData').append(newP);
+            // Create elements
+            let newCard = $('<div>');
+            let newImg = $('<img>');
+            let newBody = $('<div>');
+            let newTitle = $('<h5>');
+            let newText = $('<p>');
+            let newLike = $('<a>');
+            // Add classes
+            $(newCard).addClass('card');
+            $(newImg).addClass('card-img-top');
+            $(newBody).addClass('card-body');
+            $(newTitle).addClass('card-title');
+            $(newText).addClass('card-text');
+            $(newLike).addClass('btn btn-primary');
+            // Add text
+            $(newImg).attr('src', 'http://placehold.it/350x150');
+            $(newTitle).text(restaurantName);
+            $(newText).text('Insert text here');
+            $(newLike).attr('href', '#');
+            $(newLike).text('Like');
+            // Add to DOM
+            $('#restaurantData').append(newCard);
+            $(newCard).append(newImg);
+            $(newCard).append(newBody);
+            $(newBody).append(newTitle);
+            $(newBody).append(newText);
+            $(newBody).append(newLike);
         }
     });
 }
