@@ -154,7 +154,7 @@ function cityCodeAJAX() {
             let newLike = $('<a>');
             let linkToSite = $('<a>')
             // Add classes
-            $(newCard).addClass('card');
+            $(newCard).addClass('card border-0 shadow-lg');
             $(newImg).addClass('card-img-top');
             $(newBody).addClass('card-body');
             $(newTitle).addClass('card-title');
