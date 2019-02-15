@@ -16,6 +16,8 @@ var eventDateStart = '';
 var eventDateEnd = '';
 var queryURLEvents = '';
 let cityCode = '';
+var sadSound = $("<audio>");
+sadSound.attr("src", "assets/womp-womp.mp3");
 
 // Function runs 3 API calls, appends info to page ~ Runs when div with #get-info is clicked
 function getInfo() {    
@@ -28,9 +30,16 @@ function getInfo() {
 
     // Conditionals handle if user does not enter a city or date range
     if (city && eventDateStart && eventDateEnd) {
-
-        // Update queryURL
-        queryURLEvents = `https://api.seatgeek.com/2/events?client_id=${apiKey}&venue.city=${city}&datetime_local.gte=${eventDateStart}&datetime_local.lte=${eventDateEnd}&per_page=25`;
+        // Play sad sounds when button clicked
+        sadSound.get(0).play();
+        // checks if start and end date are the same
+        if (eventDateStart === eventDateEnd) {
+            // Update queryURL
+            queryURLEvents = `https://api.seatgeek.com/2/events?client_id=${apiKey}&venue.city=${city}&per_page=10`;
+        } else {
+            // Update queryURL
+            queryURLEvents = `https://api.seatgeek.com/2/events?client_id=${apiKey}&venue.city=${city}&datetime_local.gte=${eventDateStart}&datetime_local.lte=${eventDateEnd}&per_page=25`;
+        }
         
         // Clearing input fields for appearance
         $("#city-events").val('');
@@ -79,7 +88,6 @@ function getInfo() {
                 $("#eventData").append(newEvent);
             }
         });
-
         // Zomato API call #1 - for city code
         let cityName = city;
         let queryURLCity = `https://developers.zomato.com/api/v2.1/locations?query=${cityName}`;
@@ -91,14 +99,11 @@ function getInfo() {
                 request.setRequestHeader("user-key", "262af377ee8926dc56eff941cea5b5e1");
             },
         }).then(function(data){
-    console.log(data);
             cityCode = data.location_suggestions[0].city_id;
+            // nesting second call within the first response
             cityCodeAJAX();
-    console.log(cityCode);
         });
-        //  ==================================================================
 
-        // Zomato API call #2 - for restaurant details
         hideAndShow(); // Keeping separate so that this function can just handle ajax calls
     } else { // runs if user doesn't enter a city or date range
         $("#error-message").text("Please enter a city and date range.");
@@ -107,7 +112,7 @@ function getInfo() {
 
 // AJAX call for Zomato - get breweries
 function cityCodeAJAX() {
-    let queryURLCode = `https://developers.zomato.com/api/v2.1/search?entity_id=${cityCode}&entity_type=city&q=brewery&count=5`;
+    let queryURLCode = `https://developers.zomato.com/api/v2.1/search?entity_id=${cityCode}&entity_type=city&q=brewery&count=10`;
     $.ajax({
         url: queryURLCode,
         method: 'GET',
