@@ -56,15 +56,6 @@ label {
     border: 2px solid black;
     margin: 20px;
 }
-/* 
-.card-body {
-    opacity: 0.4;
-}
-
-.card-title, .btn-primary {
-    opacity: 1.0;
-    z-index: 2;
-} */
 
 .btn-primary {
     margin: 0 10px;
