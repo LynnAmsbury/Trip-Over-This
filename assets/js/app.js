@@ -8,6 +8,8 @@ var config = {
     messagingSenderId: "511118842960"
 };
 firebase.initializeApp(config);
+var database = firebase.database();
+
 
 // Variables for SeatGeek API
 var city = '';
@@ -23,6 +25,12 @@ function getInfo() {
     city = $("#city-events").val().trim();
     eventDateStart = $("#event-start").val();
     eventDateEnd = $("#event-end").val();
+
+    database.ref().set({
+        recentCity: city,
+        eventDateStart: eventDateStart,
+        eventDateEnd: eventDateEnd
+    });
 
     var apiKey = 'MTUyMzkxNzF8MTU0OTc0OTQ1NC4wNA';
 
@@ -105,6 +113,18 @@ function getInfo() {
     }
 }
 
+database.ref().on("value", function(snapshot) {
+    // Change the HTML to reflect
+    $("#city").text(snapshot.val().recentCity);
+    $("#endDate").text(snapshot.val().recentEndDate);
+    $("#startDate").text(snapshot.val().recentStartDate);
+
+    // Handle the errors
+}, function(errorObject) {
+    console.log("Errors handled: " + errorObject.code);
+});
+
+
 // AJAX call for Zomato - get breweries
 function cityCodeAJAX() {
     let queryURLCode = `https://developers.zomato.com/api/v2.1/search?entity_id=${cityCode}&entity_type=city&q=brewery&count=5`;
@@ -153,7 +173,6 @@ function cityCodeAJAX() {
 function hideAndShow() {
     // Hide search form
     $('#searchForm').addClass('d-none');
-
     // Make a button to search again
     $('#newSearchBtn').removeClass('d-none');
 };
