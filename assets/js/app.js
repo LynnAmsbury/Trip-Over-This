@@ -172,4 +172,5 @@ $('#newSearchBtn').on('click', function() {
 })
 
 // Event listener on input form ~ Runs get info 
-$("#get-info").on("click", getInfo);
+// $("#get-info").on("click", getInfo);
+$(document).on("click", "#get-info", getInfo);
