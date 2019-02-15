@@ -62,9 +62,9 @@ function getInfo() {
             // Looping through data.events array
             for (var i=0; i < data.events.length; i++) {
                 // Creating new DOM elements to hold API info
-                var newEvent = $("<div>");
+                var newEvent = $("<div class='eventDiv'>");
                 // Event title
-                var title = $("<p>");
+                var title = $("<h5>");
                 title.text(data.events[i].title);
                 // Event location (venue)
                 var location = $("<p>");
@@ -75,7 +75,7 @@ function getInfo() {
                 dateTime = moment(dateTime).format("MMM Do h:mm A");
                 date.text(dateTime);
                 // Event image from seatgeek
-                var image = $("<img>"); {
+                var image = $("<img class='eventImg'>"); {
                     // if seatgeek image does not exist, replace image source with angry face placeholder
                     if (data.events[i].performers[0].image === null) {
                         image.attr("src", "assets/images/angry.png");
@@ -152,6 +152,7 @@ function cityCodeAJAX() {
             let newTitle = $('<h5>');
             let newText = $('<p>');
             let newLike = $('<a>');
+            let linkToSite = $('<a>')
             // Add classes
             $(newCard).addClass('card');
             $(newImg).addClass('card-img-top');
@@ -159,13 +160,21 @@ function cityCodeAJAX() {
             $(newTitle).addClass('card-title');
             $(newText).addClass('card-text');
             $(newLike).addClass('btn btn-primary');
+            $(linkToSite).addClass('btn btn-primary');
             // Add text
-            $(newImg).attr('src', 'http://placehold.it/350x150'); // needs update
+            if (!resultsArr[i].restaurant.featured_image) {
+                newImg.attr("src", "assets/images/angry.png");
+            } else {
+                newImg.attr("src", resultsArr[i].restaurant.featured_image);
+            }
             $(newTitle).text(restaurantName);
-            $(newText).text('Insert text here'); // needs update
-            $(newLike).attr('href', resultsArr[i].restaurant.url);
-            $(newLike).attr('target', "_blank");
+            $(linkToSite).attr('href', resultsArr[i].restaurant.url);
+            $(linkToSite).attr('target', "_blank");
+            $(linkToSite).text('Visit on Zomato');
+
             $(newLike).text('Like');
+            $(newLike).attr('href', '#');
+
             // Add to DOM
             $('#restaurantData').append(newCard);
             $(newCard).append(newImg);
@@ -173,6 +182,7 @@ function cityCodeAJAX() {
             $(newBody).append(newTitle);
             $(newBody).append(newText);
             $(newBody).append(newLike);
+            $(newBody).append(linkToSite);
         }
     });
 }

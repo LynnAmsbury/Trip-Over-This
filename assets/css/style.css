@@ -1,11 +1,11 @@
-body {
-    font-family: Arial, Helvetica, sans-serif;
-}
-
 * {
     margin: 0;
     padding: 0;
     text-align: center;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 html,
@@ -51,4 +51,32 @@ label {
 
 button {
     margin-bottom: 20px;
+}
+
+.card, .eventDiv {
+    border: 2px solid black;
+    margin: 20px;
+}
+
+.card-body {
+    /* background-color: #ffffff; */
+    opacity: 0.4;
+}
+
+.card-title, .btn-primary {
+    opacity: 1.0;
+    z-index: 2;
+}
+
+.btn-primary {
+    margin: 0 10px;
+}
+
+.eventImg {
+    margin-bottom: 20px;
+}
+
+#newSearchBtn {
+    margin: 0 auto;
+    margin-top: 20px;
 }
