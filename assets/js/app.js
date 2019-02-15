@@ -62,9 +62,9 @@ function getInfo() {
             // Looping through data.events array
             for (var i=0; i < data.events.length; i++) {
                 // Creating new DOM elements to hold API info
-                var newEvent = $("<div>");
+                var newEvent = $("<div class='eventDiv'>");
                 // Event title
-                var title = $("<p>");
+                var title = $("<h5>");
                 title.text(data.events[i].title);
                 // Event location (venue)
                 var location = $("<p>");
@@ -75,7 +75,7 @@ function getInfo() {
                 dateTime = moment(dateTime).format("MMM Do h:mm A");
                 date.text(dateTime);
                 // Event image from seatgeek
-                var image = $("<img>"); {
+                var image = $("<img class='eventImg'>"); {
                     // if seatgeek image does not exist, replace image source with angry face placeholder
                     if (data.events[i].performers[0].image === null) {
                         image.attr("src", "assets/images/angry.png");
