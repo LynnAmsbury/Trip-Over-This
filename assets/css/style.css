@@ -54,6 +54,7 @@ label {
 
 .jumbotron-fluid, .btn-primary {
     background-color: rgb(69, 135, 183);
+    border-color: rgb(69, 135, 183);
 }
 
 .card, .eventDiv {
