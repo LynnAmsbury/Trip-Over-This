@@ -121,6 +121,7 @@ function cityCodeAJAX() {
             request.setRequestHeader("user-key", "262af377ee8926dc56eff941cea5b5e1");
         },
     }).then(function(data){
+        console.log(data);
         let resultsArr = data.restaurants;
         for (let i = 0; i < resultsArr.length; i++) {
             let restaurantName = resultsArr[i].restaurant.name;
@@ -139,10 +140,11 @@ function cityCodeAJAX() {
             $(newText).addClass('card-text');
             $(newLike).addClass('btn btn-primary');
             // Add text
-            $(newImg).attr('src', 'http://placehold.it/350x150');
+            $(newImg).attr('src', 'http://placehold.it/350x150'); // needs update
             $(newTitle).text(restaurantName);
-            $(newText).text('Insert text here');
-            $(newLike).attr('href', '#');
+            $(newText).text('Insert text here'); // needs update
+            $(newLike).attr('href', resultsArr[i].restaurant.url);
+            $(newLike).attr('target', "_blank");
             $(newLike).text('Like');
             // Add to DOM
             $('#restaurantData').append(newCard);
