@@ -53,6 +53,12 @@ label {
     border-color: rgb(69, 135, 183);
 }
 
+#city {
+    color:  rgb(69, 135, 183);
+    font-family: 'Nothing You Could Do', cursive;
+    font-size: 30px;
+}
+
 .card, .eventDiv {
     border: 2px solid white;
     margin: 20px;
