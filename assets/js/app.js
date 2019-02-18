@@ -138,7 +138,7 @@ function getInfo() {
 // Function displays info from Firebase on page
 database.ref().on("value", function(snapshot) {
     // Change the HTML to reflect
-    $("#city").text(snapshot.val().recentCity);
+    $("#city").text(`Recent Search: ${snapshot.val().recentCity}`);
     $("#endDate").text(snapshot.val().recentEndDate);
     $("#startDate").text(snapshot.val().recentStartDate);
 
