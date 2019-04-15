@@ -44,7 +44,7 @@
     - Zomato API
 
 ## Deployment:
-### App deployed at https://github.com/LynnAmsbury/Trip-Over-This
+### App deployed at https://lynnamsbury.github.io/Trip-Over-This/
 
 ## Future updates:
 ### In future updates to the app, we plan to 
