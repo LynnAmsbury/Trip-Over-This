@@ -44,10 +44,12 @@
     - Zomato API
 
 ## Deployment:
-### App deployed at https://mahume.github.io/Trip-Over-This/
+### App deployed at https://github.com/LynnAmsbury/Trip-Over-This
 
 ## Future updates:
 ### In future updates to the app, we plan to 
 * Add additional APIs such as displaying walking trails, local Twitter feeds, and Groupon for deals.
 * Add new fields to search for specific Zomato restaurant categories.
 * Update input type of "date" to ensure cross-browser compatibility.
+
+### Please note that this is a group project that I participated in; I do not own the original repository. I forked the project code into my repository so I could display it in my body of work. The original repository is https://github.com/mahume/Trip-Over-This.
